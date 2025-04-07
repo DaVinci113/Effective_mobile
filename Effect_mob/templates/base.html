@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="{% url 'ads:ads-list' %}">Список объявлений</a> |
+<a href="{% url 'ads:create-ad' %}">Cоздать объявление</a>
+{% block content %}
+{% endblock content %}
+</body>
+</html>
