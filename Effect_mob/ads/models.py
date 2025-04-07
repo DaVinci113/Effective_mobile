@@ -1,26 +1,39 @@
-from tkinter.constants import CASCADE
 
 from django.db import models
 from django.contrib.auth.models import User
 
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=35, verbose_name='Категория')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['category']
+
+
 class Ad(models.Model):
-    new = 'New'
-    not_new = 'NOT New'
+
     CONDITION = [
-        (new , 'Новый'),
-        (not_new, 'Б/У')
-    ]
+        ('NEW' , 'Новый'),
+        ('NOT NEW', 'Б/У'),
+        ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     title = models.CharField(max_length=25, verbose_name='Заголовок объявления')
     description = models.CharField(max_length=255, verbose_name='Описание товара')
     image_url = models.URLField(verbose_name='URL изображения')
-    category = models.CharField(max_length=30, verbose_name='Категория товара')
+    category = models.ManyToManyField(Category, verbose_name='Категория товара', related_name='category')
     condition = models.CharField(max_length=30, choices=CONDITION, verbose_name='Состояние товара')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['created_at']
+
+    def __str__(self):
+        return f'{self.title} {self.get_condition_display()}'
 
 
 class ExchangeProposal(models.Model):
