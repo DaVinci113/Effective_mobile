@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from .models import Ad
 from .forms import CreateAdForm
@@ -69,3 +70,11 @@ class DetailAd(DetailView):
             context['autor'] = False
         return context
 
+
+class SearchAd(ListView):
+    model = Ad
+    template_name = 'ads/ads_list.html'
+
+    def get_queryset(self):
+        q = self.request.GET.get('q')
+        return Ad.objects.filter(Q(title__icontains=q)|Q(description__icontains=q))
