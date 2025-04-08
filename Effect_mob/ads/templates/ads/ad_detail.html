@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+  <p>Детали объявления</p>
+    <ul>
+      <p>Заголовок: {{ object.title }}</p>
+      <p>Описание: {{ object.description }}</p>
+      <p>Image URL: {{ object.image_url }}</p>
+      <p>Категории: {{ object.category }}</p>
+      <p>Состояние: {{ object.get_condition_display }}</p>
+    </ul>
+{% endblock content %}ent %}

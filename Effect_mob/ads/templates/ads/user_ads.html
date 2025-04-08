@@ -2,8 +2,8 @@
 {% block content %}
 <p>Мои объявления</p>
   {% for ad in object_list %}
-    <ul>
-        {{ ad }}
-    </ul>
+    <li>
+        <a href="{% url 'ads:ad-detail' ad.pk %}">{{ ad }}</a>
+    </li>
   {% endfor %}
 {% endblock content %}

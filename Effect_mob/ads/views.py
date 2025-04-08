@@ -32,6 +32,20 @@ class CreateAd(CreateView):
         return super().form_valid(form)
 
 
+class AdDetail(DetailView):
+    model = Ad
+    template_name = 'ads/ad_detail.html'
+    pk_url_kwarg = 'ad_pk'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        print(context['object'])
+
+        # context['condition'] = self.request.GET.get('condition').get_condition_display()
+        return context
+
+
+
 class UpdateAd(UpdateView):
     form_class = CreateAdForm
     fields = '__all__'
