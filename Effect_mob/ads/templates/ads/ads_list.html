@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
   <p>Все объявления</p>
-  {% for object in object_list %}
+  {% for ad in object_list %}
     <ul>
-      {{ object }}
+      <a href="{% url 'ads:ad-detail' ad.pk %}">{{ ad }}</a>
     </ul>
   {% endfor %}
-{% endblock content %}ent %}
+{% endblock content %}

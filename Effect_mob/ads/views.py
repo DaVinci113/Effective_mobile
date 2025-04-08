@@ -11,10 +11,13 @@ class AdsList(ListView):
     model = Ad
     template_name = 'ads/ads_list.html'
 
+    def get_queryset(self):
+        return Ad.objects.exclude(user=self.request.user)
+
 
 class UserAdsList(ListView):
     model = Ad
-    template_name = 'ads/user_ads.html'
+    template_name = 'ads/ads_list.html'
 
     def get_queryset(self):
         return Ad.objects.filter(user=self.request.user)
@@ -23,7 +26,7 @@ class UserAdsList(ListView):
 class CreateAd(CreateView):
     form_class = CreateAdForm
     template_name = 'ads/create_ad.html'
-    success_url = '/'
+    success_url = '/ads/user_ads'
 
     def form_valid(self, form):
         instance = form.save(commit=False)
@@ -32,24 +35,37 @@ class CreateAd(CreateView):
         return super().form_valid(form)
 
 
-class AdDetail(DetailView):
+class UpdateAd(UpdateView):
+    model = Ad
+    fields = [
+        'title',
+        'description',
+        'image_url',
+        'category',
+        'condition',
+    ]
+    template_name = 'ads/update_ad.html'
+    pk_url_kwarg = 'ad_pk'
+    success_url = '/ads/user_ads/'
+
+
+class DeleteAd(DeleteView):
+    model = Ad
+    pk_url_kwarg = 'ad_pk'
+    template_name = 'ads/delete.html'
+    success_url = '/ads/user_ads/'
+
+
+class DetailAd(DetailView):
     model = Ad
     template_name = 'ads/ad_detail.html'
     pk_url_kwarg = 'ad_pk'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        print(context['object'])
-
-        # context['condition'] = self.request.GET.get('condition').get_condition_display()
+        if context['object'].user == self.request.user:
+            context['autor'] = True
+        else:
+            context['autor'] = False
         return context
-
-
-
-class UpdateAd(UpdateView):
-    form_class = CreateAdForm
-    fields = '__all__'
-    template_name = 'ads/update_ad.html'
-    pk_url_kwarg = 'ad_pk'
-    success_url = '/ads/user_ads/'
 

@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-{% block content %}
-<p>Мои объявления</p>
-  {% for ad in object_list %}
-    <li>
-        <a href="{% url 'ads:ad-detail' ad.pk %}">{{ ad }}</a>
-    </li>
-  {% endfor %}
-{% endblock content %}
