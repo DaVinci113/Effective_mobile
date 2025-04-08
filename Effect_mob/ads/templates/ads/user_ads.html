@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<p>Мои объявления</p>
+  {% for ad in object_list %}
+    <ul>
+        {{ ad }}
+    </ul>
+  {% endfor %}
+{% endblock content %}
