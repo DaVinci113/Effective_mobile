@@ -6,7 +6,7 @@ class CreateAdForm(forms.ModelForm):
 
     class Meta:
         model = Ad
-        fields = '__all__'
+        exclude = ('user',)
 
 
 class CreateProposalForm(forms.ModelForm):
