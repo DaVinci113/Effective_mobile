@@ -1,8 +1,7 @@
-
 from django.db.models import Q
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
-from .models import Ad, Category
-from .forms import CreateAdForm
+from .models import Ad, Category, ExchangeProposal
+from .forms import CreateAdForm, CreateProposalForm
 
 
 # Create your views here.
@@ -64,7 +63,7 @@ class CreateAd(CreateView):
     """Создает объявление"""
 
     form_class = CreateAdForm
-    template_name = 'ads/create_ad.html'
+    template_name = 'ads/ad_create.html'
     success_url = '/ads/user_ads'
 
     def form_valid(self, form):
@@ -85,7 +84,7 @@ class UpdateAd(UpdateView):
         'category',
         'condition',
     ]
-    template_name = 'ads/update_ad.html'
+    template_name = 'ads/ad_update.html'
     pk_url_kwarg = 'ad_pk'
     success_url = '/ads/user_ads/'
 
@@ -137,3 +136,39 @@ class SearchUserAd(ListView):
         q = self.request.GET.get('q')
         query = Ad.objects.filter(Q(title__icontains=q)|Q(description__icontains=q)).filter(user=self.request.user)
         return query
+
+
+class CreateProposal(CreateView):
+    """Создание предложения"""
+
+    form_class = CreateProposalForm
+    template_name = 'ads/proposal_create.html'
+    success_url = '/ads'
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.ad_receiver_id = Ad.objects.get(id=self.kwargs['id'])
+        instance.status = 'awaits'
+        instance.save()
+        return super().form_valid(form)
+
+
+class ProposalList(ListView):
+    """Список предложений"""
+
+    model = ExchangeProposal
+    template_name = 'ads/proposal_list.html'
+
+
+class ProposalDetail(DetailView):
+    model = ExchangeProposal
+    template_name = 'ads/proposal_detail.html'
+    pk_url_kwarg = 'proposal_pk'
+
+
+class ProposalUpdate(UpdateView):
+    model = ExchangeProposal
+    fields = ['status']
+    template_name = 'ads/proposal_update.html'
+    pk_url_kwarg = 'proposal_pk'
+    success_url = '/proposal'

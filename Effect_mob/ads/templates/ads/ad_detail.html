@@ -13,7 +13,11 @@
       <p>Состояние: {{ object.get_condition_display }}</p>
     </ul>
   {% if autor %}
-    <button onclick="location.href='{% url 'ads:update-ad' object.pk %}'" type="button">обновить</button> ||
-     <button onclick="location.href='{% url 'ads:delete-ad' object.pk %}'" type="button">удалить</button>
+    <button onclick="location.href='{% url 'ads:ad-update' object.pk %}'" type="button">обновить</button> ||
+     <button onclick="location.href='{% url 'ads:ad-delete' object.pk %}'" type="button">удалить</button>
+  {% else %}
+  <form action="{% url 'ads:proposal' object.id %}" method="get">
+    <button type="submit">Сделать предложение</button>
+  </form>
   {% endif %}
 {% endblock content %}

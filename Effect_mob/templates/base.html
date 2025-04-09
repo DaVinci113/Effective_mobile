@@ -19,7 +19,9 @@
 {% endif %}
 <a href="{% url 'ads:ads-list' %}">ВСЕ ОБЪЯВЛЕНИЯ</a> |
 <a href="{% url 'ads:user-ads' %}">МОИ ОБЪЯВЛЕНИЯ</a> |
-<a href="{% url 'ads:create-ad' %}">CОЗДАТЬ ОБЪЯВЛЕНИЕ</a> |
+<a href="{% url 'ads:proposal-list' %}">ПРОСМОТР ПРЕДЛОЖЕНИЙ</a> |
+<a href="{% url 'ads:ad-create' %}">CОЗДАТЬ ОБЪЯВЛЕНИЕ</a> |
+
 {% block content %}
 {% endblock content %}
 </body>

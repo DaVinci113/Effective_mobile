@@ -45,12 +45,15 @@ class ExchangeProposal(models.Model):
         (rejected, 'отклонена'),
         (accepted, 'принята'),
     ]
+
     ad_sender_id = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='sender', verbose_name='id объявления отправителя')
     ad_receiver_id= models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='receiver', verbose_name='id объявления получателя')
     comment = models.CharField(max_length=150, verbose_name='Комментарий')
     status = models.CharField(max_length=10, choices=STATUS, default=awaits, verbose_name='Статус заявки')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.ad_receiver_id} на {self.ad_sender_id} STATUS {self.get_status_display()}'
 
     class Meta:
         ordering = ['created_at']

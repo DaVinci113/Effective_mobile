@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+  <p>СПИСОК ПРЕДЛОЖЕНИЙ</p>
+
+
+  {% for object in object_list %}
+  <ul>
+      <a href="{% url 'ads:proposal-detail' object.pk %}">{{ object}}</a>
+  </ul>
+  {% endfor %}
+
+{% endblock content %}
