@@ -18,7 +18,7 @@ class AdsList(ListView):
 
 class UserAdsList(ListView):
     model = Ad
-    template_name = 'ads/ads_list.html'
+    template_name = 'ads/user_ads_list.html'
 
     def get_queryset(self):
         return Ad.objects.filter(user=self.request.user)
@@ -77,4 +77,15 @@ class SearchAd(ListView):
 
     def get_queryset(self):
         q = self.request.GET.get('q')
-        return Ad.objects.filter(Q(title__icontains=q)|Q(description__icontains=q))
+        query = Ad.objects.filter(Q(title__icontains=q)|Q(description__icontains=q)).exclude(user=self.request.user)
+        return query
+
+
+class SearchUserAd(ListView):
+    model = Ad
+    template_name = 'ads/user_ads_list.html'
+
+    def get_queryset(self):
+        q = self.request.GET.get('q')
+        query = Ad.objects.filter(Q(title__icontains=q)|Q(description__icontains=q)).filter(user=self.request.user)
+        return query

@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-  <p>ВСЕ ОБЪЯВЛЕНИЯ</p>
+  <p>МОИ ОБЪЯВЛЕНИЯ</p>
 
    <ul>
-  <form action="{% url 'ads:search-ad' %}" method="get">
+  <form action="{% url 'ads:search-user-ad' %}" method="get">
       <input type="search" name="q" placeholder="Поиск...">
       <button type="submit">Поиск</button>
   </form>
   </ul>
+
   {% if object_list %}
     {% for ad in object_list %}
       <ul>

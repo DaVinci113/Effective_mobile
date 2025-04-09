@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import AdsList, CreateAd, UserAdsList, UpdateAd, DeleteAd, DetailAd, SearchAd
+from .views import AdsList, CreateAd, UserAdsList, UpdateAd, DeleteAd, DetailAd, SearchAd, SearchUserAd
 
 app_name = 'ads'
+
 urlpatterns = [
     path('', AdsList.as_view(), name='ads-list'),
     path('create_ad/', CreateAd.as_view(), name='create-ad'),
@@ -10,4 +11,5 @@ urlpatterns = [
     path('ads/user_ads/delete/<int:ad_pk>/', DeleteAd.as_view(), name='delete-ad'),
     path('ads/detail/<int:ad_pk>/', DetailAd.as_view(), name='ad-detail'),
     path('ads/search_ad/', SearchAd.as_view(), name='search-ad'),
+    path('ads/search_user_ad/', SearchUserAd.as_view(), name='search-user-ad'),
 ]
