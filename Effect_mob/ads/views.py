@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.dispatch import receiver
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from .models import Ad, Category, ExchangeProposal
 from .forms import CreateAdForm, CreateProposalForm
