@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.db.models import Q
+from django.dispatch import receiver
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from .models import Ad, Category, ExchangeProposal
 from .forms import CreateAdForm, CreateProposalForm
@@ -147,13 +149,59 @@ class CreateProposal(CreateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
+        instance.sender = User.objects.get(id=self.request.user.id)
+        instance.receiver = Ad.objects.get(id=self.kwargs['id']).user
         instance.ad_receiver_id = Ad.objects.get(id=self.kwargs['id'])
         instance.status = 'awaits'
         instance.save()
         return super().form_valid(form)
 
 
-class ProposalList(ListView):
+
+class PropFilter:
+    """Категории фильтрации предложений"""
+
+    def get_status(self):
+        return ExchangeProposal.STATUS
+
+    def get_send_or_receive(self):
+        return [
+            ('sender', 'Отправитель'),
+            ('receiver', 'Получатель'),
+        ]
+
+
+class ProposalFiltered(PropFilter, ListView):
+    """Список предложений с примененными фильтрами"""
+
+    template_name = 'ads/proposal_list.html'
+
+    def get_queryset(self):
+        status = self.request.GET.getlist('status')
+        role = self.request.GET.getlist('role')
+        user = self.request.user
+        if len(role)<2 and 'sender' in role:
+            filter_by = ExchangeProposal.objects.filter(
+                sender=user
+            )
+        elif len(role)<2 and 'receiver' in role:
+            filter_by = ExchangeProposal.objects.filter(
+                receiver=user
+            )
+        else:
+            filter_by = ExchangeProposal.objects.filter(
+                Q(sender=user)|Q(receiver=user)
+            )
+        if status:
+            filter_by = filter_by.filter(
+                status__in=status
+            )
+        return filter_by
+
+
+
+
+class ProposalList(ProposalFiltered, ListView):
     """Список предложений"""
 
     model = ExchangeProposal
@@ -161,12 +209,16 @@ class ProposalList(ListView):
 
 
 class ProposalDetail(DetailView):
+    """Информация по предложению"""
+
     model = ExchangeProposal
     template_name = 'ads/proposal_detail.html'
     pk_url_kwarg = 'proposal_pk'
 
 
 class ProposalUpdate(UpdateView):
+    """Обновляет предложение"""
+
     model = ExchangeProposal
     fields = ['status']
     template_name = 'ads/proposal_update.html'

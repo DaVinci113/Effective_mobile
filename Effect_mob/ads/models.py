@@ -29,7 +29,7 @@ class Ad(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.title} {self.get_condition_display()}'
+        return f'{self.user} {self.title} {self.get_condition_display()}'
 
     class Meta:
         ordering = ['created_at']
@@ -45,15 +45,16 @@ class ExchangeProposal(models.Model):
         (rejected, 'отклонена'),
         (accepted, 'принята'),
     ]
-
-    ad_sender_id = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='sender', verbose_name='id объявления отправителя')
-    ad_receiver_id= models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='receiver', verbose_name='id объявления получателя')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
+    ad_sender_id = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='ad_sender_id', verbose_name='id объявления отправителя')
+    ad_receiver_id= models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='ad_receiver_id')
     comment = models.CharField(max_length=150, verbose_name='Комментарий')
     status = models.CharField(max_length=10, choices=STATUS, default=awaits, verbose_name='Статус заявки')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.ad_receiver_id} на {self.ad_sender_id} STATUS {self.get_status_display()}'
+        return f'{self.ad_receiver_id} {self.ad_sender_id} STATUS {self.get_status_display()}'
 
     class Meta:
         ordering = ['created_at']

@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import AdsList, CreateAd, UserAdsList, UpdateAd, DeleteAd, DetailAd, SearchAd, SearchUserAd, AdsFilter, \
-    CreateProposal, ProposalList, ProposalDetail, ProposalUpdate
+    CreateProposal, ProposalList, ProposalDetail, ProposalUpdate, ProposalFiltered
 
 app_name = 'ads'
 urlpatterns = [
@@ -18,4 +18,5 @@ urlpatterns = [
     path('proposal/', ProposalList.as_view(), name='proposal-list'),
     path('proposal/detail/<int:proposal_pk>/', ProposalDetail.as_view(), name='proposal-detail'),
     path('proposal/update/<int:proposal_pk>/', ProposalUpdate.as_view(), name='proposal-detail'),
+    path('filtered/', ProposalFiltered.as_view(), name='proposal-filter')
 ]
