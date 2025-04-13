@@ -4,7 +4,7 @@
 cd /home/<user_name>/
 
 Устанавливаем пакетный менеджер uv: 
-wget -qO- https://astral.sh/uv/install.sh | sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
 Клонируем репозиторий с проектом: git clone https://github.com/DaVinci113/Effective_mobile
 
