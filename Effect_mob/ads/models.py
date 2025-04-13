@@ -23,7 +23,7 @@ class Ad(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     title = models.CharField(max_length=25, verbose_name='Заголовок объявления')
     description = models.CharField(max_length=255, verbose_name='Описание товара')
-    image_url = models.URLField(verbose_name='URL изображения')
+    image_url = models.URLField(blank=True, verbose_name='URL изображения')
     category = models.ManyToManyField(Category, verbose_name='Категория товара', blank=True, related_name='category')
     condition = models.CharField(choices=CONDITION, verbose_name='Состояние товара')
     created_at = models.DateTimeField(auto_now_add=True)
